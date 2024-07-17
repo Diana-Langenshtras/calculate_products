@@ -1,0 +1,55 @@
+@import 'globals';
+@import 'variables';
+
+h1 {
+    font-size: 48px;
+}
+
+h2 {
+    font-size: 24px;
+}
+
+.main {
+    min-inline-size: 320px;
+    min-block-size: 100dvb;
+    background-color: $primary-bg-color;
+    color: $text-color;
+    font-size: 20px;
+}
+
+.link {
+    text-decoration: none;
+}
+
+.button {
+    background-color: $primary-color;
+    color: $text-color;
+    border-radius: 50px;
+    padding: 10px 20px;
+    font-size: 24px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    text-transform: none;
+    align-items: center;
+  }
+
+.button:hover {
+    background-color: $secondary-color;
+    transition: opacity ease 0.3s;
+    cursor: pointer;
+}
+
+@media (width <= 768px) {
+    h1 {
+        font-size: 36px;
+    }
+    
+    h2 {
+        font-size: 20px;
+    }
+    
+    .main {
+        font-size: 16px;
+    }
+  }
