@@ -9,10 +9,21 @@
           </v-btn>
         </template>
         <template v-slot:default="{ isActive }">
-            <v-card title="Dialog">
+            <v-card title="Добавить продукт">
               <v-card-text>
                 <v-sheet class="mx-auto" width="300">
-                    <v-date-picker v-model="date"></v-date-picker>
+                  <v-select :item-props="itemProps" :items="products"></v-select>
+
+               <!--  <select class="select" id="select" v-model="productValue">
+                    <option :value="null" disabled hidden>Select option</option>
+                    <option v-for="(product, index) in products" :value="product.name">{{ product.name }}</option>
+                  </select>-->
+                  <v-text-field
+                    :rules="rules"
+                    hide-details="auto"
+                    label="Вес, г"
+                    v-model="weightValue"
+                  ></v-text-field>
                     <v-btn class="mt-2" type="submit" block text="Close Dialog" @click="isActive.value = closeDialog();">Добавить</v-btn>
                 </v-sheet>
               </v-card-text>
@@ -22,8 +33,11 @@
 </template>
   
 <script>
-  import SvgIcon from '@jamescoyle/vue-icon';
-  import { mdiPlus } from '@mdi/js';
+import SvgIcon from '@jamescoyle/vue-icon';
+import { mdiPlus } from '@mdi/js';
+
+import { useRootStore } from '../stores/root';
+import { storeToRefs } from 'pinia';
   
     export default {
       components: {
@@ -33,20 +47,40 @@
       data() {
         return {
             path: mdiPlus,
-            date: new Date(),
+            products: [],
+            productValue: '',
+            weightValue: 0,
+            rules: [
+              value => !!value || 'Required.',
+              value => (value === 0) || 'Required.',
+            ],
         }
       },
 
       methods: {
         closeDialog() {
-            if (this.inputValue === '') return true;
+            if (this.productValue === '' || this.weightValue === 0) return true;
             else {
-              //  this.$emit('add', this.inputValue);
+                this.$emit('add', this.productValue, this.weightValue);
                 this.inputValue = '';
+                this.weightValue = 0;
                 return false;
             }
-        }
-    }
+        },
+        itemProps(item) {
+          return {
+            title: item.name,
+            subtitle: item.name,
+          }
+        },
+      },
+      created() {
+        const rootStore = useRootStore();
+        rootStore.getProducts();
+        const {products} = storeToRefs(rootStore);
+        this.products = products;
+        console.log(this.products)
+      },
   }
  </script>
 
@@ -55,5 +89,10 @@
 
   .button {
     border-radius: 0;
+  }
+
+  .select {
+    opacity: 1;
+    row-gap: 8px;
   }
 </style>

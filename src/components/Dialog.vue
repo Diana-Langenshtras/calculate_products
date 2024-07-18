@@ -39,15 +39,13 @@
 
       methods: {
         closeDialog() {
-            if (this.inputValue === '') return true;
-            else {
-              //  this.$emit('add', this.inputValue);
-                this.inputValue = '';
-                return false;
+            
+                this.$emit('edit', this.date);
+                
             }
         }
     }
-  }
+  
  </script>
 
 <style lang="scss" scoped>

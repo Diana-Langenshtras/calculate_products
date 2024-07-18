@@ -7,7 +7,7 @@
       <v-toolbar-title>Калькулятор калорий</v-toolbar-title>
 
       <v-spacer></v-spacer>
-      <Dialog @add="addPerson"></Dialog>
+      <Dialog @edit="editDate"></Dialog>
      
 
       <v-menu open-on-hover>
@@ -103,6 +103,10 @@ import Tab from '../components/Tab.vue'
         this.more.push(...removed)
         this.$nextTick(() => { this.currentItem = 'tab-' + item })
       },
+      
+      editDate(date) {
+        console.log(date);
+      }
     },
   }
 </script>

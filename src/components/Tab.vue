@@ -1,7 +1,7 @@
 <template>
     <h1>{{ item }}</h1>
     <h2>{{ id }}</h2>
-    <addFoodDialog></addFoodDialog>
+    <addFoodDialog @add="addProduct"></addFoodDialog>
 
 </template>
 
@@ -25,6 +25,11 @@ import addFoodDialog from '../components/addFoodDialog.vue'
         return {
           pathRate: mdiStarOutline,
      }},
+    methods: {
+      addProduct(product, weight) {
+        console.log(product)
+      }
+    },
   }
 </script>
 
