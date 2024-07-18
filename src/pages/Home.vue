@@ -3,19 +3,16 @@
     <v-toolbar
       color="deep-purple-accent-4"
     >
-      <v-app-bar-nav-icon>
-      
-      </v-app-bar-nav-icon>
-
-      <v-toolbar-title>калькулятор калорий</v-toolbar-title>
+      <svg-icon type="mdi" :path="pathApple"></svg-icon>
+      <v-toolbar-title>Калькулятор калорий</v-toolbar-title>
 
       <v-spacer></v-spacer>
+      <Dialog @add="addPerson"></Dialog>
+     
 
-      
-
-      <v-menu>
+      <v-menu open-on-hover>
             <template v-slot:activator="{ props }">
-              <v-btn v-bind="props">lol</v-btn>
+              <v-btn v-bind="props"><svg-icon type="mdi" :path="pathMenu"></svg-icon></v-btn>
             </template>
 
             <v-list>
@@ -36,47 +33,29 @@
             :key="item"
             :text="item"
             :value="'tab-' + item"
-          ></v-tab>
+          >
+          
+        </v-tab>
 
-          <v-menu v-if="more.length">
-            <template v-slot:activator="{ props }">
-              <v-btn
-                class="align-self-center me-4"
-                height="100%"
-                rounded="0"
-                variant="plain"
-                v-bind="props"
-              >
-                more
-
-                <v-icon icon="mdi-menu-down" end></v-icon>
-              </v-btn>
-            </template>
-
-            <v-list class="bg-grey-lighten-3">
-              <v-list-item
-                v-for="item in more"
-                :key="item"
-                :title="item"
-                @click="addItem(item)"
-              ></v-list-item>
-            </v-list>
-          </v-menu>
+          
         </v-tabs>
       </template>
     </v-toolbar>
 
     <v-tabs-window v-model="currentItem">
       <v-tabs-window-item
-        v-for="item in items.concat(more)"
+        v-for="(item, index) in items"
         :key="item"
         :value="'tab-' + item"
+        
       >
         <v-card flat>
           <v-card-text>
             <h2>{{ item }}</h2>
-            {{ text }}
-            <v-date-picker></v-date-picker>
+            <Tab
+            :item="item"
+            :id="index"
+            ></Tab>   
           </v-card-text>
         </v-card>
       </v-tabs-window-item>
@@ -85,8 +64,24 @@
 </template>
 
 <script>
+import SvgIcon from '@jamescoyle/vue-icon';
+import { mdiDotsVertical } from '@mdi/js';
+import { mdiFoodAppleOutline } from '@mdi/js';
+
+import { useRootStore } from '../stores/root';
+import { storeToRefs } from 'pinia';
+
+import Dialog from '../components/Dialog.vue'
+import Tab from '../components/Tab.vue'
+
   export default {
+    components: {
+      Dialog, SvgIcon, Tab,
+    },
+
     data: () => ({
+      pathMenu: mdiDotsVertical,
+      pathApple: mdiFoodAppleOutline,
       menu: [
         { title: 'Click Me' },
         { title: 'Click Me' },
@@ -95,12 +90,8 @@
       ],
       currentItem: 'tab-Web',
       items: [
-        'Breakfast', 'Lunch', 'Dinner',
+        'Завтрак', 'Обед', 'Ужин',
       ],
-      more: [
-        'News', 'Maps', 'Books', 'Flights', 'Apps',
-      ],
-      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
     }),
 
     methods: {

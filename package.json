@@ -9,7 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@jamescoyle/vue-icon": "^0.1.2",
     "@mdi/font": "^7.4.47",
+    "@mdi/js": "^7.4.47",
     "axios": "^1.7.2",
     "json-server": "^1.0.0-beta.1",
     "pinia": "^2.1.7",
