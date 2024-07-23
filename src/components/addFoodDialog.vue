@@ -12,12 +12,7 @@
             <v-card title="Добавить продукт">
               <v-card-text>
                 <v-sheet class="mx-auto" width="300">
-                  <v-select :item-props="itemProps" :items="products"></v-select>
-
-               <!--  <select class="select" id="select" v-model="productValue">
-                    <option :value="null" disabled hidden>Select option</option>
-                    <option v-for="(product, index) in products" :value="product.name">{{ product.name }}</option>
-                  </select>-->
+                  <v-autocomplete v-model="productValue" :item-props="itemProps" :items="products"></v-autocomplete>
                   <v-text-field
                     :rules="rules"
                     hide-details="auto"
@@ -49,10 +44,10 @@ import { storeToRefs } from 'pinia';
             path: mdiPlus,
             products: [],
             productValue: '',
-            weightValue: 0,
+            weightValue: 12,
             rules: [
               value => !!value || 'Required.',
-              value => (value === 0) || 'Required.',
+              value => (value !== 0) || 'Required.',
             ],
         }
       },
@@ -62,7 +57,7 @@ import { storeToRefs } from 'pinia';
             if (this.productValue === '' || this.weightValue === 0) return true;
             else {
                 this.$emit('add', this.productValue, this.weightValue);
-                this.inputValue = '';
+                this.productValue = '';
                 this.weightValue = 0;
                 return false;
             }

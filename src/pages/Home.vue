@@ -8,13 +8,11 @@
 
       <v-spacer></v-spacer>
       <Dialog @edit="editDate"></Dialog>
-     
 
       <v-menu open-on-hover>
             <template v-slot:activator="{ props }">
               <v-btn v-bind="props"><svg-icon type="mdi" :path="pathMenu"></svg-icon></v-btn>
             </template>
-
             <v-list>
               <v-list-item v-for="(item, i) in menu" :key="i">
                 <v-list-item-title>{{ item.title }}</v-list-item-title>
@@ -22,22 +20,18 @@
             </v-list>
       </v-menu>
 
-
       <template v-slot:extension>
         <v-tabs
           v-model="currentItem"
           fixed-tabs
         >
-          <v-tab
-            v-for="item in items"
-            :key="item"
-            :text="item"
-            :value="'tab-' + item"
-          >
-          
-        </v-tab>
-
-          
+            <v-tab
+              v-for="item in items"
+              :key="item"
+              :text="item"
+              :value="'tab-' + item"
+            >       
+          </v-tab>      
         </v-tabs>
       </template>
     </v-toolbar>
@@ -46,8 +40,7 @@
       <v-tabs-window-item
         v-for="(item, index) in items"
         :key="item"
-        :value="'tab-' + item"
-        
+        :value="'tab-' + item"      
       >
         <v-card flat>
           <v-card-text>
@@ -55,6 +48,7 @@
             <Tab
             :item="item"
             :id="index"
+            :date="currentDate"
             ></Tab>   
           </v-card-text>
         </v-card>
@@ -82,6 +76,7 @@ import Tab from '../components/Tab.vue'
     data: () => ({
       pathMenu: mdiDotsVertical,
       pathApple: mdiFoodAppleOutline,
+      currentDate: new Date(),
       menu: [
         { title: 'Click Me' },
         { title: 'Click Me' },
@@ -90,7 +85,7 @@ import Tab from '../components/Tab.vue'
       ],
       currentItem: 'tab-Web',
       items: [
-        'Завтрак', 'Обед', 'Ужин',
+        'breakfast', 'lunch', 'dinner',
       ],
     }),
 
@@ -105,7 +100,8 @@ import Tab from '../components/Tab.vue'
       },
       
       editDate(date) {
-        console.log(date);
+        this.currentDate = date;
+        console.log(this.currentDate)
       }
     },
   }

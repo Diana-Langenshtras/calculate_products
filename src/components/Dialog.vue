@@ -38,10 +38,8 @@
       },
 
       methods: {
-        closeDialog() {
-            
-                this.$emit('edit', this.date);
-                
+        closeDialog() {           
+                this.$emit('edit', this.date);               
             }
         }
     }

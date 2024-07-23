@@ -1,36 +1,34 @@
 <template>
     <h1>{{ item }}</h1>
-    <h2>{{ id }}</h2>
+    <h2>{{ date }}</h2>
+
     <addFoodDialog @add="addProduct"></addFoodDialog>
 
 </template>
 
-<script>
+<script setup>
 import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiStarOutline } from '@mdi/js';
+import { useRootStore } from '../stores/root';
+import { toRefs } from "@vue/reactivity";
 
 import addFoodDialog from '../components/addFoodDialog.vue'
 
-  export default {
-    props: {
+  const pathRate =  mdiStarOutline;
+  const rootStore = useRootStore();
+
+  const props = defineProps({
       id: Number,
       item: String,
-    },
+      date: Date,
+    })
 
-    components: {
-        SvgIcon, addFoodDialog,
-    },
+   // const myProps = toRefs(props);
 
-    data() {
-        return {
-          pathRate: mdiStarOutline,
-     }},
-    methods: {
-      addProduct(product, weight) {
-        console.log(product)
+    function addProduct(product, weight) {
+        rootStore.updateDiet((props.date.getDate() + "/" + (props.date.getMonth() + 1) + "/" + props.date.getFullYear()), props.item, product, weight)
       }
-    },
-  }
+  
 </script>
 
 <style lang="scss" scoped>
