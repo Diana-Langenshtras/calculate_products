@@ -44,7 +44,7 @@ import { storeToRefs } from 'pinia';
             path: mdiPlus,
             products: [],
             productValue: '',
-            weightValue: 12,
+            weightValue: 100,
             rules: [
               value => !!value || 'Required.',
               value => (value !== 0) || 'Required.',
@@ -58,7 +58,7 @@ import { storeToRefs } from 'pinia';
             else {
                 this.$emit('add', this.productValue, this.weightValue);
                 this.productValue = '';
-                this.weightValue = 0;
+                this.weightValue = 100;
                 return false;
             }
         },
@@ -74,7 +74,6 @@ import { storeToRefs } from 'pinia';
         rootStore.getProducts();
         const {products} = storeToRefs(rootStore);
         this.products = products;
-        console.log(this.products)
       },
   }
  </script>

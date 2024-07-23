@@ -75,8 +75,8 @@ export const useRootStore = defineStore(STORE_NAME,
                     product: product,
                     weight: Number(weight),
                 });
-               // localStorage.setItem(STORE_NAME, JSON.stringify(this.dailyDiet));
-                console.log(this.dailyDiet);
+                localStorage.setItem(DIET_NAME, JSON.stringify(this.dailyDiet));
+                
             },
 
             deleteDiet(id){
