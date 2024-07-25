@@ -52,7 +52,7 @@ export const useRootStore = defineStore(STORE_NAME,
             async getProducts() {
                 const data = await axios.get(PRODUCTS_URL);
                 this.products = data?.data;
-              //  console.log(this.products)
+                console.log(this.products)
             },
 
             addToDiet(date, meal, product, weight){
