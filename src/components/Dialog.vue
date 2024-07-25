@@ -29,11 +29,18 @@
       components: {
         SvgIcon, 
       },
-  
+      
+      props: {
+        currentDate: {
+          type: Date,
+          default: new Date()
+        },
+      },
+
       data() {
         return {
             path: mdiPlus,
-            date: new Date(),
+            date: this.currentDate,
         }
       },
 

@@ -32,16 +32,16 @@ export const useRootStore = defineStore(STORE_NAME,
                 "13/07/2024":
                     {
                         "breakfrast": [
-                            {"product_1": weight},
-                            {"product_2": weight},
+                            {product: product,
+                            weight: weight},
                         ],
                         "lunch": [
-                            {"product_1": weight},
-                            {"product_2": weight},
+                            {product: product,
+                            weight: weight},
                         ],
                         "dinner": [
-                            {"product_1": weight},
-                            {"product_2": weight},
+                            {product: product,
+                            weight: weight},
                         ]
                     },
             }
@@ -55,7 +55,7 @@ export const useRootStore = defineStore(STORE_NAME,
               //  console.log(this.products)
             },
 
-            updateDiet(date, meal, product, weight){
+            addToDiet(date, meal, product, weight){
                 if (!(date in this.dailyDiet))
                     {
                         const newmeal = {}
@@ -75,24 +75,13 @@ export const useRootStore = defineStore(STORE_NAME,
                     product: product,
                     weight: Number(weight),
                 });
-                localStorage.setItem(DIET_NAME, JSON.stringify(this.dailyDiet));
-                
+                localStorage.setItem(DIET_NAME, JSON.stringify(this.dailyDiet));    
             },
-
-            deleteDiet(id){
-                if (id in this.savesAndRatings)
-                    this.savesAndRatings[id].save = false;
-                localStorage.setItem(STORE_NAME, JSON.stringify(this.savesAndRatings));
-            },
-
-            updateRatings(active, rating, id){
-                if (!(id in this.savesAndRatings))
-                    this.savesAndRatings[id] = {
-                        save: active,
-                        rating: rating,
-                    };
-                else this.savesAndRatings[id].rating = rating;
-                localStorage.setItem(STORE_NAME, JSON.stringify(this.savesAndRatings));
+            removeFromDiet(date, meal, index){
+                if (date in this.dailyDiet)
+                    if (meal in this.dailyDiet[date])
+                        this.dailyDiet[date][meal].splice(index, 1);
+                localStorage.setItem(DIET_NAME, JSON.stringify(this.dailyDiet));    
             },
         }
     }

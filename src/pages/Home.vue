@@ -7,16 +7,23 @@
       <v-toolbar-title>Калькулятор калорий</v-toolbar-title>
 
       <v-spacer></v-spacer>
-      <Dialog @edit="editDate"></Dialog>
+      <Dialog @edit="editDate" :currentDate="currentDate"></Dialog>
 
       <v-menu open-on-hover>
             <template v-slot:activator="{ props }">
               <v-btn v-bind="props"><svg-icon type="mdi" :path="pathMenu"></svg-icon></v-btn>
             </template>
             <v-list>
-              <v-list-item v-for="(item, i) in menu" :key="i">
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
-              </v-list-item>
+              <router-link to="/statistics">
+                <v-list-item>
+                  <v-list-item-title>{{ 1 }}</v-list-item-title>
+                </v-list-item>
+              </router-link>
+              <router-link to="/library">
+                <v-list-item>
+                  <v-list-item-title>{{ 2 }}</v-list-item-title>
+                </v-list-item>
+              </router-link>
             </v-list>
       </v-menu>
 
@@ -83,7 +90,7 @@ import Tab from '../components/Tab.vue'
         { title: 'Click Me' },
         { title: 'Click Me 2' },
       ],
-      currentItem: 'tab-Web',
+      currentItem: 'tab-breakfast',
       items: [
         'breakfast', 'lunch', 'dinner',
       ],
@@ -101,7 +108,6 @@ import Tab from '../components/Tab.vue'
       
       editDate(date) {
         this.currentDate = date;
-        console.log(this.currentDate)
       }
     },
   }
