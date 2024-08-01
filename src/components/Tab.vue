@@ -28,9 +28,7 @@
 import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiDeleteOutline } from '@mdi/js';
 import { useRootStore } from '../stores/root';
-import { toRefs } from "@vue/reactivity";
 import { computed } from 'vue';
-import { ref } from 'vue';
 
 import addFoodDialog from '../components/addFoodDialog.vue'
 
@@ -48,7 +46,8 @@ import addFoodDialog from '../components/addFoodDialog.vue'
     const currentItem = (props.item);
     if (currentDate in rootStore?.dailyDiet)
       if (currentItem in rootStore?.dailyDiet[currentDate])
-        return rootStore?.dailyDiet[currentDate][currentItem]});
+        return rootStore?.dailyDiet[currentDate][currentItem];
+  });
 
   function addProduct(product, weight) {
         rootStore.addToDiet((props.date.getDate() + "/" + (props.date.getMonth() + 1) + "/" + props.date.getFullYear()), props.item, product, weight)

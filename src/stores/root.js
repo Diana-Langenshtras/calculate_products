@@ -50,12 +50,17 @@ export const useRootStore = defineStore(STORE_NAME,
 
         actions: {
             async getProducts() {
-                const data = await axios.get(PRODUCTS_URL);
-                this.products = data?.data;
-                console.log(this.products)
+
+                try {
+                    const data = await axios.get(PRODUCTS_URL);
+                    this.products = data?.data;
+                  } catch (err) {
+                    console.log(err.code); 
+                }    
             },
 
             addToDiet(date, meal, product, weight){
+
                 if (!(date in this.dailyDiet))
                     {
                         const newmeal = {}
@@ -77,7 +82,9 @@ export const useRootStore = defineStore(STORE_NAME,
                 });
                 localStorage.setItem(DIET_NAME, JSON.stringify(this.dailyDiet));    
             },
+
             removeFromDiet(date, meal, index){
+                
                 if (date in this.dailyDiet)
                     if (meal in this.dailyDiet[date])
                         this.dailyDiet[date][meal].splice(index, 1);

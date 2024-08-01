@@ -11,17 +11,17 @@
 
       <v-menu open-on-hover>
             <template v-slot:activator="{ props }">
-              <v-btn v-bind="props"><svg-icon type="mdi" :path="pathMenu"></svg-icon></v-btn>
+              <v-btn v-bind="props"><svg-icon type="mdi" :path="pathMenu"/></v-btn>
             </template>
             <v-list>
               <router-link to="/statistics">
                 <v-list-item>
-                  <v-list-item-title>{{ 1 }}</v-list-item-title>
+                  <v-list-item-title>стастистика</v-list-item-title>
                 </v-list-item>
               </router-link>
               <router-link to="/library">
                 <v-list-item>
-                  <v-list-item-title>{{ 2 }}</v-list-item-title>
+                  <v-list-item-title>бибиотека</v-list-item-title>
                 </v-list-item>
               </router-link>
             </v-list>
@@ -69,9 +69,6 @@ import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiDotsVertical } from '@mdi/js';
 import { mdiFoodAppleOutline } from '@mdi/js';
 
-import { useRootStore } from '../stores/root';
-import { storeToRefs } from 'pinia';
-
 import Dialog from '../components/Dialog.vue'
 import Tab from '../components/Tab.vue'
 
@@ -84,12 +81,6 @@ import Tab from '../components/Tab.vue'
       pathMenu: mdiDotsVertical,
       pathApple: mdiFoodAppleOutline,
       currentDate: new Date(),
-      menu: [
-        { title: 'Click Me' },
-        { title: 'Click Me' },
-        { title: 'Click Me' },
-        { title: 'Click Me 2' },
-      ],
       currentItem: 'tab-breakfast',
       items: [
         'breakfast', 'lunch', 'dinner',
