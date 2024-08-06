@@ -3,7 +3,11 @@
     <v-toolbar
       color="deep-purple-accent-4"
     >
-      <svg-icon type="mdi" :path="pathApple"></svg-icon>
+      <v-icon
+        color="white"
+        icon="mdi-food-apple-outline"
+        size="large"
+      ></v-icon>
       <v-toolbar-title>Калькулятор калорий</v-toolbar-title>
 
       <v-spacer></v-spacer>
@@ -11,7 +15,13 @@
 
       <v-menu open-on-hover>
             <template v-slot:activator="{ props }">
-              <v-btn v-bind="props"><svg-icon type="mdi" :path="pathMenu"/></v-btn>
+              <v-btn v-bind="props">
+                <v-icon
+                  color="white"
+                  icon="mdi-dots-vertical"
+                  size="large"
+                ></v-icon>
+              </v-btn>
             </template>
             <v-list>
               <router-link to="/statistics">
@@ -65,21 +75,16 @@
 </template>
 
 <script>
-import SvgIcon from '@jamescoyle/vue-icon';
-import { mdiDotsVertical } from '@mdi/js';
-import { mdiFoodAppleOutline } from '@mdi/js';
 
 import Dialog from '../components/Dialog.vue'
 import Tab from '../components/Tab.vue'
 
   export default {
     components: {
-      Dialog, SvgIcon, Tab,
+      Dialog, Tab,
     },
 
     data: () => ({
-      pathMenu: mdiDotsVertical,
-      pathApple: mdiFoodAppleOutline,
       currentDate: new Date(),
       currentItem: 'tab-breakfast',
       items: [

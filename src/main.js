@@ -15,6 +15,9 @@ import App from './App.vue'
 const vuetify = createVuetify({
   components,
   directives,
+  icons: {
+    iconfont: 'mdi',
+  },
 })
 
 // router

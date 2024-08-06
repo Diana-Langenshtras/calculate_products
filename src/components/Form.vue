@@ -29,40 +29,44 @@
       ></v-text-field>
   
       <v-select
-        v-model="state.select"
-        :error-messages="v$.select.$errors.map(e => e.$message)"
+        v-model="state.activity"
+        :error-messages="v$.activity.$errors.map(e => e.$message)"
         :items="items"
         label="Степень физической активности"
         required
-        @blur="v$.select.$touch"
-        @change="v$.select.$touch"
+        @blur="v$.activity.$touch"
+        @change="v$.activity.$touch"
       ></v-select>
+
+      <v-radio-group 
+        v-model="state.gender" 
+        :error-messages="v$.gender.$errors.map(e => e.$message)" 
+        required 
+        @blur="v$.gender.$touch" 
+        @change="v$.gender.$touch"
+      >
+        <v-radio label="Мужчина" value="male"></v-radio>
+        <v-radio label="Женщина" value="female"></v-radio>
+      </v-radio-group>
   
-      <v-checkbox
-        v-model="state.checkbox"
-        :error-messages="v$.checkbox.$errors.map(e => e.$message)"
-        label="Do you agree?"
-        required
-        @blur="v$.checkbox.$touch"
-        @change="v$.checkbox.$touch"
-      ></v-checkbox>
-  
-      <v-btn class="me-4" @click="v$.$validate"> submit </v-btn>
-      <v-btn @click="clear"> clear </v-btn>
+      <v-btn class="me-4" @click="calculate">Рассчитать</v-btn>
+      <v-btn @click="clear">Очистить</v-btn>
     </form>
   </template>
   
   <script setup>
-    import { reactive } from 'vue'
+    import { reactive, defineEmits } from 'vue'
     import { useVuelidate } from '@vuelidate/core'
     import { required } from '@vuelidate/validators'
+
+    const emit = defineEmits(['calculate'])
   
     const initialState = {
       age: '',
       height: '',
       weight: '',
-      select: null,
-      checkbox: null,
+      activity: null,
+      gender: null,
     }
   
     const state = reactive({
@@ -75,9 +79,9 @@
       age: { required },
       height: { required },
       weight: { required },
-      select: { required },
+      activity: { required },
       items: { required },
-      checkbox: { required },
+      gender: { required },
     }
   
     const v$ = useVuelidate(rules, state)
@@ -89,5 +93,15 @@
         state[key] = value
       }
     }
+
+    
+   function calculate() {
+      v$.value.$validate();
+      if (state.age && state.height && state.weight && state.activity && state.gender) {
+        emit('calculate', state);
+        clear();
+      }
+    }
+  
   </script>
   
