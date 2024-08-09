@@ -2,7 +2,7 @@
 @import 'variables';
 
 h1 {
-    font-size: 48px;
+    font-size: 36px;
 }
 
 h2 {
@@ -10,34 +10,50 @@ h2 {
 }
 
 .main {
-    min-inline-size: 320px;
-    min-block-size: 100dvb;
-    background-color: $primary-bg-color;
-    color: $text-color;
-    font-size: 20px;
+    padding: 30px 100px;
 }
 
 .link {
     text-decoration: none;
 }
 
+.icon {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
 .button {
-    background-color: $primary-color;
-    color: $text-color;
-    border-radius: 50px;
+    background-color: $accent-color;
+    border-radius: 0;
+    color: $secondary-color;
     padding: 10px 20px;
     font-size: 24px;
     display: flex;
-    gap: 10px;
+    gap: 20px;
     justify-content: center;
     text-transform: none;
     align-items: center;
-  }
+}
+
+.button-back {
+    
+}
 
 .button:hover {
-    background-color: $secondary-color;
+    background-color: $primary-color;
     transition: opacity ease 0.3s;
     cursor: pointer;
+}
+
+.text-white {
+    color: $secondary-color;
+}
+
+.text-black {
+    color: $text-color;
 }
 
 @media (width <= 768px) {

@@ -9,17 +9,17 @@
           </v-btn>
         </template>
         <template v-slot:default="{ isActive }">
-            <v-card title="Добавить продукт">
+            <v-card>
               <v-card-text>
                 <v-sheet class="mx-auto" width="300">
-                  <v-autocomplete v-model="productValue" :item-props="itemProps" :items="products"></v-autocomplete>
+                  <v-autocomplete v-model="productValue" :rules="rules" :item-props="itemProps" :items="products"></v-autocomplete>
                   <v-text-field
                     :rules="rules"
                     hide-details="auto"
                     label="Вес, г"
                     v-model="weightValue"
                   ></v-text-field>
-                    <v-btn class="mt-2" type="submit" block text="Close Dialog" @click="isActive.value = closeDialog();">Добавить</v-btn>
+                    <v-btn class="mt-2 button" type="submit" block text="Close Dialog" @click="isActive.value = closeDialog();">Добавить</v-btn>
                 </v-sheet>
               </v-card-text>
             </v-card>
@@ -44,9 +44,9 @@ import { storeToRefs } from 'pinia';
             path: mdiPlus,
             products: [],
             productValue: '',
-            weightValue: 100,
+            weightValue: 0,
             rules: [
-              value => !!value || 'Required.',
+              value => (value !== '') || 'Required.',
               value => (value !== 0) || 'Required.',
             ],
         }
@@ -54,7 +54,9 @@ import { storeToRefs } from 'pinia';
 
       methods: {
         closeDialog() {
-            if (this.productValue === '' || this.weightValue === 0) return true;
+            if (this.productValue === '' || this.weightValue === 0) {
+              return true
+            }
             else {
                 this.$emit('add', this.productValue, this.weightValue);
                 this.productValue = '';

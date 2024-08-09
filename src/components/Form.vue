@@ -1,5 +1,5 @@
 <template>
-    <form>
+    <form class="form">
       <v-text-field
         v-model="state.age"
         :counter="10"
@@ -48,9 +48,10 @@
         <v-radio label="Мужчина" value="male"></v-radio>
         <v-radio label="Женщина" value="female"></v-radio>
       </v-radio-group>
-  
-      <v-btn class="me-4" @click="calculate">Рассчитать</v-btn>
-      <v-btn @click="clear">Очистить</v-btn>
+      <div class="button-group">
+        <v-btn class="me-4 button" @click="calculate">Рассчитать</v-btn>
+        <v-btn class="button" @click="clear">Очистить</v-btn>
+      </div>
     </form>
   </template>
   
@@ -105,3 +106,14 @@
   
   </script>
   
+<style lang="scss" scoped>
+
+.form {
+  padding-top: 20px;
+}
+
+.button-group {
+  display: flex;
+}
+
+</style>

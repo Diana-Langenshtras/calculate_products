@@ -1,6 +1,4 @@
 <template>
-    <h1>{{ item }}</h1>
-    <h2>{{ date }}</h2>
      <v-list >
       <v-list-item
         v-for="(item, index) in currentDailyDiet"
@@ -10,7 +8,7 @@
       >
         <template v-slot:append>
           <v-btn
-            color="grey-lighten-1"
+            color="#000000"
             icon="mdi-information"
             variant="text"
             @click="deleteItem(index)"

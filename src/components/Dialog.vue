@@ -9,11 +9,11 @@
           </v-btn>
         </template>
         <template v-slot:default="{ isActive }">
-            <v-card title="Dialog">
+            <v-card>
               <v-card-text>
                 <v-sheet class="mx-auto" width="300">
                     <v-date-picker v-model="date"></v-date-picker>
-                    <v-btn class="mt-2" type="submit" block text="Close Dialog" @click="isActive.value = closeDialog();">Добавить</v-btn>
+                    <v-btn class="mt-2 button" type="submit" block text="Close Dialog" @click="isActive.value = closeDialog();">Добавить</v-btn>
                 </v-sheet>
               </v-card-text>
             </v-card>

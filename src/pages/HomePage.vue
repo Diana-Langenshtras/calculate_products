@@ -1,14 +1,15 @@
 <template>
   <v-card>
     <v-toolbar
-      color="deep-purple-accent-4"
+      class="toolbar"
     >
       <v-icon
+        class="icon"
         color="white"
         icon="mdi-food-apple-outline"
         size="large"
       ></v-icon>
-      <v-toolbar-title>Калькулятор калорий</v-toolbar-title>
+      <v-toolbar-title class="text-white toolbar__title">Калькулятор калорий</v-toolbar-title>
 
       <v-spacer></v-spacer>
       <Dialog @edit="editDate" :currentDate="currentDate"></Dialog>
@@ -24,14 +25,14 @@
               </v-btn>
             </template>
             <v-list>
-              <router-link to="/statistics">
+              <router-link class="link" to="/statistics">
                 <v-list-item>
-                  <v-list-item-title>стастистика</v-list-item-title>
+                  <v-list-item-title>Стастистика</v-list-item-title>
                 </v-list-item>
               </router-link>
-              <router-link to="/library">
+              <router-link class="link" to="/library">
                 <v-list-item>
-                  <v-list-item-title>бибиотека</v-list-item-title>
+                  <v-list-item-title>Библиотека</v-list-item-title>
                 </v-list-item>
               </router-link>
             </v-list>
@@ -43,6 +44,7 @@
           fixed-tabs
         >
             <v-tab
+              class="text-white tab__title"
               v-for="item in items"
               :key="item"
               :text="item"
@@ -61,7 +63,6 @@
       >
         <v-card flat>
           <v-card-text>
-            <h2>{{ item }}</h2>
             <Tab
             :item="item"
             :id="index"
@@ -88,7 +89,7 @@ import Tab from '../components/Tab.vue'
       currentDate: new Date(),
       currentItem: 'tab-breakfast',
       items: [
-        'breakfast', 'lunch', 'dinner',
+        'Завтрак', 'Обед', 'Ужин',
       ],
     }),
 
@@ -108,3 +109,24 @@ import Tab from '../components/Tab.vue'
     },
   }
 </script>
+
+<style lang="scss" scoped>
+
+.toolbar {
+  background-color: $primary-color;
+}
+
+.toolbar__title {
+  font-size: 28px;
+}
+
+.tab__title {
+  font-size: 24px;
+  text-transform: none;
+}
+
+.icon {
+  margin-left: 20px;
+}
+
+</style>

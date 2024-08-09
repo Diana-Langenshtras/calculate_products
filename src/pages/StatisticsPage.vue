@@ -1,15 +1,19 @@
 <template>
-    <router-link to="/">
-        <v-btn><svg-icon type="mdi" :path="pathMenu"/></v-btn>
-    </router-link>
-    <Form @calculate="calculateDiet"></Form>
-    <Dialog @edit="editFirstDate" :currentDate="firstDate"></Dialog>
-    <Dialog @edit="editSecondDate" :currentDate="secondDate"></Dialog>
-    <v-spacer></v-spacer>
-    <div>
-        <apexchart width="100%" type="bar" :options="options" :series="series" :key="JSON.stringify(series)"></apexchart>
-    </div>
-    {{ caloriesByDay }}
+    <main class="main">
+        <router-link class="link" to="/">
+            <v-btn class="button button-back"><svg-icon class="icon" type="mdi" :path="pathArrowLeft"/> Назад </v-btn>
+        </router-link>
+        <Form @calculate="calculateDiet"></Form>
+        <div class="date-group">
+            <Dialog @edit="editFirstDate" :currentDate="firstDate"></Dialog>
+            <span class="icon"><svg-icon type="mdi" :path="pathMinus"/></span>
+            <Dialog @edit="editSecondDate" :currentDate="secondDate"></Dialog>
+        </div>
+        <v-spacer></v-spacer>
+        <div>
+            <apexchart class="chart" width="100%" type="bar" :options="options" :series="series" :key="JSON.stringify(series)"></apexchart>
+        </div>
+    </main>
 </template>
 
 <script setup>
@@ -18,7 +22,7 @@ import Dialog from '../components/Dialog.vue';
 
 import { useRootStore } from '../stores/root';
 import SvgIcon from '@jamescoyle/vue-icon';
-import { mdiDotsVertical } from '@mdi/js';
+import { mdiMinus, mdiArrowLeft } from '@mdi/js';
 
 import { reactive } from 'vue'
 import { computed } from 'vue';
@@ -35,7 +39,9 @@ import { ref } from 'vue';
     const calorieAllowance = ref(0);
 
     const rootStore = useRootStore();
-    const pathMenu = mdiDotsVertical;
+
+    const pathMinus = mdiMinus;
+    const pathArrowLeft = mdiArrowLeft;
 
     function calculateDiet(data){
         console.log(data);
@@ -53,13 +59,11 @@ import { ref } from 'vue';
     const firstDate = ref(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000));
     const secondDate = ref(new Date());
     
-
     const getDaysArray = function(start, end) {
         const arr = [];
         for(const dt=new Date(start); dt<=new Date(end); dt.setDate(dt.getDate()+1)){
             arr.push(new Date(dt).getDate() + "/" + (new Date(dt).getMonth() + 1) + "/" + new Date(dt).getFullYear());
         }
-        console.log(arr)
         return arr;
     };
     
@@ -95,17 +99,7 @@ import { ref } from 'vue';
             xaxis: {
                 categories: dayArray
             },
-           /* theme: {
-                mode: 'light', 
-                palette: 'palette4', 
-                monochrome: {
-                    enabled: false,
-                    color: '#255aee',
-                    shadeTo: 'light',
-                    shadeIntensity: 0.65
-                },
-            }*/
-            colors: ['#2b908f', '#4ecdc4'],
+            colors: ['#1c8000', '#4500db'],
         });
 
     const caloriesByDay = computed(() => { 
@@ -121,7 +115,7 @@ import { ref } from 'vue';
                             sum += parseInt(el.product.calories) / 100 * Number(el.weight);
                         }
                     )
-                    array[index] = sum; sum = 0;
+                    array[index] = Math.floor(sum); sum = 0;
                 }
             }
         }
@@ -140,9 +134,23 @@ import { ref } from 'vue';
             data: caloriesByDay      
         },
         {
-            name: 'НОРМА',
+            name: 'Норма',
             data: allowance
        }]
     );
 
 </script>
+
+<style lang="scss" scoped>
+
+.chart {
+    padding: 20px;
+}
+
+.date-group {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+</style>
