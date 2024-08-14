@@ -31,11 +31,11 @@
         <v-table height="300px" fixed-header>
           <thead>
             <tr>
-              <th class="text-left">Name</th>
-              <th class="text-left">Calories</th>
-              <th class="text-left">carbs</th>
-              <th class="text-left">fats</th>
-              <th class="text-left">proteins</th>
+              <th class="text-left">Название</th>
+              <th class="text-left">Калории</th>
+              <th class="text-left">Углеводы</th>
+              <th class="text-left">Жиры</th>
+              <th class="text-left">Белки</th>
             </tr>
           </thead>
           <tbody>

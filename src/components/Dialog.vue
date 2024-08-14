@@ -20,7 +20,7 @@
                     text="Close Dialog" 
                     @click="isActive.value = closeDialog();"
                   >
-                    Добавить
+                    Выбрать
                   </v-btn>
               </v-sheet>
             </v-card-text>
