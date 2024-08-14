@@ -1,9 +1,9 @@
 <template>
-     <v-list >
+     <v-list>
       <v-list-item
         v-for="(item, index) in currentDailyDiet"
-        :key="index"
-        :subtitle="item.product.weight"
+        :key="item.product.name"
+        :subtitle="`${item.weight}, г`"
         :title="item.product.name"
       >
         <template v-slot:append>
@@ -12,14 +12,13 @@
             icon="mdi-information"
             variant="text"
             @click="deleteItem(index)"
-          ><svg-icon type="mdi" :path="pathDelete"></svg-icon></v-btn>
+          >
+            <svg-icon type="mdi" :path="pathDelete"/>
+          </v-btn>
         </template>
       </v-list-item>
-     
-    </v-list>
-   
-    <addFoodDialog @add="addProduct"></addFoodDialog>
-
+    </v-list> 
+    <addFoodDialog @add="addProduct"/>
 </template>
 
 <script setup>
@@ -27,33 +26,44 @@ import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiDeleteOutline } from '@mdi/js';
 import { useRootStore } from '../stores/root';
 import { computed } from 'vue';
-
 import addFoodDialog from '../components/addFoodDialog.vue'
 
   const rootStore = useRootStore();
   const pathDelete = mdiDeleteOutline;
 
   const props = defineProps({
-      id: Number,
-      item: String,
-      date: Date,
+      id: {
+          type: Number,
+          required: true,
+      },
+      item: {
+          type: String,
+          required: true,
+      },
+      date: {
+          type: Date,
+          required: true,
+      },
     })
 
   const currentDailyDiet = computed(() => {
-    const currentDate = (props.date.getDate() + "/" + (props.date.getMonth() + 1) + "/" + props.date.getFullYear());
-    const currentItem = (props.item);
-    if (currentDate in rootStore?.dailyDiet)
-      if (currentItem in rootStore?.dailyDiet[currentDate])
-        return rootStore?.dailyDiet[currentDate][currentItem];
+
+      const currentDate = (props.date.getDate() + "/" + (props.date.getMonth() + 1) + "/" + props.date.getFullYear());
+      const currentItem = (props.item);
+      if (currentDate in rootStore?.dailyDiet)
+        if (currentItem in rootStore?.dailyDiet[currentDate])
+          return rootStore?.dailyDiet[currentDate][currentItem];
   });
 
   function addProduct(product, weight) {
-        rootStore.addToDiet((props.date.getDate() + "/" + (props.date.getMonth() + 1) + "/" + props.date.getFullYear()), props.item, product, weight)
-    }
+
+      rootStore.addToDiet((props.date.getDate() + "/" + (props.date.getMonth() + 1) + "/" + props.date.getFullYear()), props.item, product, weight)
+  }
 
   function deleteItem(index) {
-        rootStore.removeFromDiet((props.date.getDate() + "/" + (props.date.getMonth() + 1) + "/" + props.date.getFullYear()), props.item, index)
-    }
+
+      rootStore.removeFromDiet((props.date.getDate() + "/" + (props.date.getMonth() + 1) + "/" + props.date.getFullYear()), props.item, index)
+  }
   
 </script>
 

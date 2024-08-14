@@ -1,7 +1,14 @@
 <template>
     <main class="main">
         <router-link class="link" to="/">
-            <v-btn class="button button-back"><svg-icon class="icon" type="mdi" :path="pathArrowLeft"/> Назад </v-btn>
+            <v-btn class="button button-back">
+              <svg-icon 
+                class="icon" 
+                type="mdi" 
+                :path="pathArrowLeft"
+              /> 
+                Назад 
+            </v-btn>
         </router-link>
         <v-card class="main__card-search" flat >
           <v-toolbar 
@@ -14,9 +21,9 @@
                 v-model="search"
                 hide-details="auto"
                 bg-color="#ffffff"
-                color="#4500db"
+                color="#1c8000"
               />
-              <v-btn class="button card__button" icon>
+              <v-btn class="button button-search" icon>
                 <svg-icon type="mdi" :path="pathSearch"/>
               </v-btn>
           </v-toolbar>
@@ -32,7 +39,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item,index) in sortedProducts" :key="`${index}:${item.id}`">
+            <tr v-for="item in sortedProducts" :key="item.name">
               <td>{{ item.name }}</td>
               <td>{{ item.calories }}</td>
               <td>{{ item.carbs }}</td>
@@ -41,7 +48,7 @@
             </tr>
           </tbody>
         </v-table>
-        <addNewFoodDialog @add="addProduct"></addNewFoodDialog>
+        <addNewFoodDialog/>
     </main>
 </template>
   
@@ -50,10 +57,9 @@ import { useRootStore } from '../stores/root';
 import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiArrowLeft, mdiMagnify } from '@mdi/js';
 
-import { computed } from 'vue';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
-import addNewFoodDialog from '../components/addFoodDialog.vue'
+import addNewFoodDialog from '../components/addNewFoodDialog.vue'
 
     const rootStore = useRootStore();
     
@@ -62,19 +68,37 @@ import addNewFoodDialog from '../components/addFoodDialog.vue'
     const search = ref('');
 
     const sortedProducts = computed(() => {   
-      return rootStore.products.filter(product => product.name.toLowerCase().includes(search.value.toLowerCase()));
+
+        const array = rootStore.products.concat(rootStore.addedProducts);
+        return array.filter(product => product.name.toLowerCase().includes(search.value.toLowerCase()));
     })
 
 </script>
 
 <style lang="scss" scoped>
 
+.main {
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+}
+
 .card__input {
   padding: 20px;
 }
 
 .v-toolbar {
-  background-color: $accent-color;
+  background-color: $primary-color;
+}
+
+.button-search {
+  background-color: $primary-color;
+  border-radius: 0;
+  color: $secondary-color;
+}
+
+.v-toolbar__content > .v-btn:last-child {
+  margin-inline-end: 15px;
 }
 
 </style>

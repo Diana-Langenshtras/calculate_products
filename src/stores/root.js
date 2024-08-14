@@ -10,16 +10,19 @@ const getDefault = () => {
         return {};
 	}
 
+    const getDefaultArray = () => {
+        return [];
+	}
+
 const getAddedProducts = () => {
         const addedProducts = localStorage.getItem(PRODUCTS_NAME);
-        return addedProducts ? JSON.parse(addedProducts) : getDefault();
+        return addedProducts ? JSON.parse(addedProducts) : getDefaultArray();
     }
 
 const getDailyDiet = () => {
         const dailyDiet = localStorage.getItem(DIET_NAME);
         return dailyDiet ? JSON.parse(dailyDiet) : getDefault();
     }
-
 
 export const useRootStore = defineStore(STORE_NAME, 
     {
@@ -89,6 +92,17 @@ export const useRootStore = defineStore(STORE_NAME,
                     if (meal in this.dailyDiet[date])
                         this.dailyDiet[date][meal].splice(index, 1);
                 localStorage.setItem(DIET_NAME, JSON.stringify(this.dailyDiet));    
+            },
+
+            addToProducts(product){
+                this.addedProducts.push({
+                    name: product.name,
+                    calories: product.calories,
+                    carbs: product.carbs,
+                    fats: product.fats,
+                    proteins: product.proteins,
+                })
+                localStorage.setItem(PRODUCTS_NAME, JSON.stringify(this.addedProducts));   
             },
         }
     }

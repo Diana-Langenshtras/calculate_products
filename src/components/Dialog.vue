@@ -1,55 +1,52 @@
 <template>
-      <v-dialog max-width="500">
-        <template v-slot:activator="{ props: activatorProps }">
-            <v-btn
-              v-bind="activatorProps"
-              class="button"
-            >
-                {{ date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() }}
+    <v-dialog max-width="500">
+      <template v-slot:activator="{ props: activatorProps }">
+          <v-btn
+            v-bind="activatorProps"
+            class="button"
+          >
+              {{ date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() }}
           </v-btn>
-        </template>
-        <template v-slot:default="{ isActive }">
-            <v-card>
-              <v-card-text>
-                <v-sheet class="mx-auto" width="300">
-                    <v-date-picker v-model="date"></v-date-picker>
-                    <v-btn class="mt-2 button" type="submit" block text="Close Dialog" @click="isActive.value = closeDialog();">Добавить</v-btn>
-                </v-sheet>
-              </v-card-text>
-            </v-card>
-        </template>
-      </v-dialog>
+      </template>
+      <template v-slot:default="{ isActive }">
+          <v-card>
+            <v-card-text>
+              <v-sheet class="mx-auto" width="300">
+                  <v-date-picker v-model="date"/>
+                  <v-btn 
+                    class="mt-2 button" 
+                    type="submit" 
+                    block 
+                    text="Close Dialog" 
+                    @click="isActive.value = closeDialog();"
+                  >
+                    Добавить
+                  </v-btn>
+              </v-sheet>
+            </v-card-text>
+          </v-card>
+      </template>
+    </v-dialog>
 </template>
   
-<script>
-  import SvgIcon from '@jamescoyle/vue-icon';
-  import { mdiPlus } from '@mdi/js';
-  
-    export default {
-      components: {
-        SvgIcon, 
-      },
-      
-      props: {
-        currentDate: {
-          type: Date,
-          default: new Date()
-        },
-      },
+<script setup>
+import { ref } from 'vue';
 
-      data() {
-        return {
-            path: mdiPlus,
-            date: this.currentDate,
-        }
-      },
+  const emit = defineEmits(['edit']);
 
-      methods: {
-        closeDialog() {           
-                this.$emit('edit', this.date);               
-            }
-        }
-    }
+  const props = defineProps({
+      currentDate: {
+        type: Date,
+        default: new Date()
+      }
+  })
+
+  const date = ref(props.currentDate);
+
+  function closeDialog() {    
+
+      emit('edit', this.date);               
+  }
   
  </script>
 

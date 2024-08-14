@@ -5,8 +5,8 @@
               v-bind="activatorProps"
               class="button"
             >
-                Добавить
-          </v-btn>
+              Добавить
+            </v-btn>
         </template>
         <template v-slot:default="{ isActive }">
             <v-card>
@@ -14,118 +14,117 @@
                 <v-sheet class="mx-auto" width="300">
                     <form class="form">
                       <v-text-field
-                        v-model="state.age"
+                        v-model="state.name"
                         :counter="10"
-                        :error-messages="v$.age.$errors.map(e => e.$message)"
-                        label="Возраст"
+                        :error-messages="v$.name.$errors.map(e => e.$message)"
+                        label="name"
                         required
-                        @blur="v$.age.$touch"
-                        @input="v$.age.$touch"
-                      ></v-text-field>
+                        @blur="v$.name.$touch"
+                        @input="v$.name.$touch"
+                      />
                   
                       <v-text-field
-                        v-model="state.height"
-                        :error-messages="v$.height.$errors.map(e => e.$message)"
-                        label="Рост"
+                        v-model="state.calories"
+                        :error-messages="v$.calories.$errors.map(e => e.$message)"
+                        label="calories"
                         required
-                        @blur="v$.height.$touch"
-                        @input="v$.height.$touch"
-                      ></v-text-field>
+                        @blur="v$.calories.$touch"
+                        @input="v$.calories.$touch"
+                      />
 
                       <v-text-field
-                        v-model="state.weight"
-                        :error-messages="v$.weight.$errors.map(e => e.$message)"
-                        label="Вес"
+                        v-model="state.carbs"
+                        :error-messages="v$.carbs.$errors.map(e => e.$message)"
+                        label="carbs"
                         required
-                        @blur="v$.weight.$touch"
-                        @input="v$.weight.$touch"
-                      ></v-text-field>
-                  
-                      <v-select
-                        v-model="state.activity"
-                        :error-messages="v$.activity.$errors.map(e => e.$message)"
-                        :items="items"
-                        label="Степень физической активности"
-                        required
-                        @blur="v$.activity.$touch"
-                        @change="v$.activity.$touch"
-                      ></v-select>
+                        @blur="v$.carbs.$touch"
+                        @input="v$.carbs.$touch"
+                      />
 
-                      <v-radio-group 
-                        v-model="state.gender" 
-                        :error-messages="v$.gender.$errors.map(e => e.$message)" 
-                        required 
-                        @blur="v$.gender.$touch" 
-                        @change="v$.gender.$touch"
-                      >
-                        <v-radio label="Мужчина" value="male"></v-radio>
-                        <v-radio label="Женщина" value="female"></v-radio>
-                      </v-radio-group>
-                      <div class="button-group">
-                        <v-btn class="me-4 button" @click="calculate">Рассчитать</v-btn>
-                        <v-btn class="button" @click="clear">Очистить</v-btn>
-                      </div>
+                      <v-text-field
+                        v-model="state.fats"
+                        :error-messages="v$.fats.$errors.map(e => e.$message)"
+                        label="fats"
+                        required
+                        @blur="v$.fats.$touch"
+                        @input="v$.fats.$touch"
+                      />
+
+                      <v-text-field
+                        v-model="state.proteins"
+                        :error-messages="v$.proteins.$errors.map(e => e.$message)"
+                        label="proteins"
+                        required
+                        @blur="v$.proteins.$touch"
+                        @input="v$.proteins.$touch"
+                      />            
                     </form>
-                    <v-btn class="mt-2 button" type="submit" block text="Close Dialog" @click="isActive.value = closeDialog();">Добавить</v-btn>
+                    <v-btn 
+                      class="mt-2 button" 
+                      type="submit" 
+                      block 
+                      text="Close Dialog" 
+                      @click="isActive.value = closeDialog();"
+                    >
+                      Добавить
+                    </v-btn>
                 </v-sheet>
               </v-card-text>
             </v-card>
         </template>
       </v-dialog>
 </template>
-  
-<script>
-import SvgIcon from '@jamescoyle/vue-icon';
-import { mdiPlus } from '@mdi/js';
 
+<script setup>
+import { reactive } from 'vue'
+import { useVuelidate } from '@vuelidate/core'
+import { numeric, required } from '@vuelidate/validators'
 import { useRootStore } from '../stores/root';
-import { storeToRefs } from 'pinia';
-  
-    export default {
-      components: {
-        SvgIcon, 
-      },
-  
-      data() {
-        return {
-            path: mdiPlus,
-            products: [],
-            productValue: '',
-            weightValue: 0,
-            rules: [
-              value => (value !== '') || 'Required.',
-              value => (value !== 0) || 'Required.',
-            ],
-        }
-      },
 
-      methods: {
-        closeDialog() {
-            if (this.productValue === '' || this.weightValue === 0) {
-              return true
-            }
-            else {
-                this.$emit('add', this.productValue, this.weightValue);
-                this.productValue = '';
-                this.weightValue = 100;
-                return false;
-            }
-        },
-        itemProps(item) {
-          return {
-            title: item.name,
-            subtitle: item.name,
-          }
-        },
-      },
-      created() {
-        const rootStore = useRootStore();
-        rootStore.getProducts();
-        const {products} = storeToRefs(rootStore);
-        this.products = products;
-      },
+  const rootStore = useRootStore();
+  
+  const initialState = {
+    name: '',
+    calories: '',
+    carbs: '',
+    fats: '',
+    proteins: '',
   }
- </script>
+  
+  const state = reactive({
+    ...initialState,
+  })
+  
+  const rules = {
+    name: { required },
+    calories: { required, numeric },
+    carbs: { required, numeric },
+    fats: { required, numeric },
+    proteins: { required, numeric },
+  }
+  
+  const v$ = useVuelidate(rules, state)
+  
+  function clear() {
+
+      v$.value.$reset()
+      for (const [key, value] of Object.entries(initialState)) {
+        state[key] = value
+      }
+  }
+  
+  function closeDialog() {
+
+      v$.value.$validate();
+      if (state.name && state.calories && state.carbs && state.fats && state.proteins) {
+          rootStore.addToProducts(state);
+          clear();
+          return false;    
+      }
+      else return true;
+  }
+
+</script>
 
 <style lang="scss" scoped>
   @import '../assets/styles/style.scss';

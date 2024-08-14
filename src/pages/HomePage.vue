@@ -8,12 +8,10 @@
         color="white"
         icon="mdi-food-apple-outline"
         size="large"
-      ></v-icon>
+      />
       <v-toolbar-title class="text-white toolbar__title">Калькулятор калорий</v-toolbar-title>
-
-      <v-spacer></v-spacer>
-      <Dialog @edit="editDate" :currentDate="currentDate"></Dialog>
-
+      <v-spacer/>
+      <Dialog @edit="editDate" :currentDate="currentDate"/>
       <v-menu open-on-hover>
             <template v-slot:activator="{ props }">
               <v-btn v-bind="props">
@@ -21,13 +19,13 @@
                   color="white"
                   icon="mdi-dots-vertical"
                   size="large"
-                ></v-icon>
+                />
               </v-btn>
             </template>
             <v-list>
               <router-link class="link" to="/statistics">
                 <v-list-item>
-                  <v-list-item-title>Стастистика</v-list-item-title>
+                  <v-list-item-title>Статистика</v-list-item-title>
                 </v-list-item>
               </router-link>
               <router-link class="link" to="/library">
@@ -37,7 +35,6 @@
               </router-link>
             </v-list>
       </v-menu>
-
       <template v-slot:extension>
         <v-tabs
           v-model="currentItem"
@@ -49,12 +46,10 @@
               :key="item"
               :text="item"
               :value="'tab-' + item"
-            >       
-          </v-tab>      
+            />            
         </v-tabs>
       </template>
     </v-toolbar>
-
     <v-tabs-window v-model="currentItem">
       <v-tabs-window-item
         v-for="(item, index) in items"
@@ -64,10 +59,10 @@
         <v-card flat>
           <v-card-text>
             <Tab
-            :item="item"
-            :id="index"
-            :date="currentDate"
-            ></Tab>   
+              :item="item"
+              :id="index"
+              :date="currentDate"
+            />   
           </v-card-text>
         </v-card>
       </v-tabs-window-item>
@@ -75,39 +70,22 @@
   </v-card>
 </template>
 
-<script>
-
+<script setup>
 import Dialog from '../components/Dialog.vue'
 import Tab from '../components/Tab.vue'
-
-  export default {
-    components: {
-      Dialog, Tab,
-    },
-
-    data: () => ({
-      currentDate: new Date(),
-      currentItem: 'tab-breakfast',
-      items: [
+import { ref } from 'vue';
+  
+      const currentDate = ref(new Date());
+      const currentItem = ref('tab-breakfast');
+      const items = [
         'Завтрак', 'Обед', 'Ужин',
-      ],
-    }),
-
-    methods: {
-      addItem (item) {
-        const removed = this.items.splice(0, 1)
-        this.items.push(
-          ...this.more.splice(this.more.indexOf(item), 1),
-        )
-        this.more.push(...removed)
-        this.$nextTick(() => { this.currentItem = 'tab-' + item })
-      },
+      ];
       
-      editDate(date) {
-        this.currentDate = date;
+      function editDate(date) {
+
+          currentDate.value = date;
       }
-    },
-  }
+    
 </script>
 
 <style lang="scss" scoped>

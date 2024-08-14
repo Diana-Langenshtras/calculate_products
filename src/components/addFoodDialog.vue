@@ -12,14 +12,32 @@
             <v-card>
               <v-card-text>
                 <v-sheet class="mx-auto" width="300">
-                  <v-autocomplete v-model="productValue" :rules="rules" :item-props="itemProps" :items="products"></v-autocomplete>
+                  <v-autocomplete
+                    v-model="state.productValue"
+                    :error-messages="v$.productValue.$errors.map(e => e.$message)"
+                    label="Продукт"
+                    required
+                    @blur="v$.productValue.$touch"
+                    @change="v$.productValue.$touch"
+                    :item-props="itemProps" 
+                    :items="products"
+                  />
                   <v-text-field
-                    :rules="rules"
-                    hide-details="auto"
+                    v-model="state.weightValue"
+                    :error-messages="v$.weightValue.$errors.map(e => e.$message)"
                     label="Вес, г"
-                    v-model="weightValue"
-                  ></v-text-field>
-                    <v-btn class="mt-2 button" type="submit" block text="Close Dialog" @click="isActive.value = closeDialog();">Добавить</v-btn>
+                    required
+                    @blur="v$.weightValue.$touch"
+                    @input="v$.weightValue.$touch"
+                  />
+                  <v-btn 
+                    class="mt-2 button" 
+                    type="submit" 
+                    block text="Close Dialog" 
+                    @click="isActive.value = closeDialog();"
+                  >
+                    Добавить
+                  </v-btn>
                 </v-sheet>
               </v-card-text>
             </v-card>
@@ -27,57 +45,66 @@
       </v-dialog>
 </template>
   
-<script>
-import SvgIcon from '@jamescoyle/vue-icon';
-import { mdiPlus } from '@mdi/js';
-
+<script setup>
+import { reactive, defineEmits, computed } from 'vue'
+import { useVuelidate } from '@vuelidate/core'
+import { numeric, required } from '@vuelidate/validators'
 import { useRootStore } from '../stores/root';
-import { storeToRefs } from 'pinia';
   
-    export default {
-      components: {
-        SvgIcon, 
-      },
+  const emit = defineEmits(['add']);
+  const rootStore = useRootStore();
   
-      data() {
-        return {
-            path: mdiPlus,
-            products: [],
-            productValue: '',
-            weightValue: 0,
-            rules: [
-              value => (value !== '') || 'Required.',
-              value => (value !== 0) || 'Required.',
-            ],
-        }
-      },
-
-      methods: {
-        closeDialog() {
-            if (this.productValue === '' || this.weightValue === 0) {
-              return true
-            }
-            else {
-                this.$emit('add', this.productValue, this.weightValue);
-                this.productValue = '';
-                this.weightValue = 100;
-                return false;
-            }
-        },
-        itemProps(item) {
-          return {
-            title: item.name,
-            subtitle: item.name,
-          }
-        },
-      },
-      created() {
-        const rootStore = useRootStore();
-        rootStore.getProducts();
-        const {products} = storeToRefs(rootStore);
-        this.products = products;
-      },
+  const initialState = {
+    weightValue: 100,
+    productValue: '',
   }
+  
+  const state = reactive({
+    ...initialState,
+  })
+  
+  const rules = {
+    productValue: { required },
+    weightValue: { required, numeric },
+  }
+  
+  const v$ = useVuelidate(rules, state)
+  
+  function clear() {
+
+      v$.value.$reset()
+      for (const [key, value] of Object.entries(initialState)) {
+          state[key] = value
+        }
+  }
+  
+  function closeDialog() {
+
+      v$.value.$validate();
+      if (state.productValue === '' || state.weightValue === 0) {
+            return true
+        }
+      else {
+          emit('add', state.productValue, state.weightValue);
+          clear();
+          return false;    
+        }
+  }
+
+  function itemProps(item) {
+
+      return {
+          title: item.name,
+          subtitle: item.name,
+      }
+  }
+
+  const products = computed(() => {
+
+      const array = rootStore.products.concat(rootStore.addedProducts);
+      return array;
+  });
+    
  </script>
 
 <style lang="scss" scoped>

@@ -1,17 +1,31 @@
 <template>
     <main class="main">
         <router-link class="link" to="/">
-            <v-btn class="button button-back"><svg-icon class="icon" type="mdi" :path="pathArrowLeft"/> Назад </v-btn>
+            <v-btn class="button button-back">
+                <svg-icon 
+                  class="icon" 
+                  type="mdi" 
+                  :path="pathArrowLeft"
+                /> 
+                  Назад 
+            </v-btn>
         </router-link>
-        <Form @calculate="calculateDiet"></Form>
+        <Form @calculate="calculateDiet"/>
         <div class="date-group">
-            <Dialog @edit="editFirstDate" :currentDate="firstDate"></Dialog>
+            <Dialog @edit="editFirstDate" :currentDate="firstDate"/>
             <span class="icon"><svg-icon type="mdi" :path="pathMinus"/></span>
-            <Dialog @edit="editSecondDate" :currentDate="secondDate"></Dialog>
+            <Dialog @edit="editSecondDate" :currentDate="secondDate"/>
         </div>
-        <v-spacer></v-spacer>
+        <v-spacer/>
         <div>
-            <apexchart class="chart" width="100%" type="bar" :options="options" :series="series" :key="JSON.stringify(series)"></apexchart>
+            <apexchart 
+              class="chart" 
+              width="100%" 
+              type="bar" 
+              :options="options" 
+              :series="series" 
+              :key="JSON.stringify(series)"
+            />
         </div>
     </main>
 </template>
@@ -24,9 +38,7 @@ import { useRootStore } from '../stores/root';
 import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiMinus, mdiArrowLeft } from '@mdi/js';
 
-import { reactive } from 'vue'
-import { computed } from 'vue';
-import { ref } from 'vue';
+import { reactive, computed, ref } from 'vue'
 
     const activity = {
         'Минимальная активность': 1.2,
@@ -44,10 +56,9 @@ import { ref } from 'vue';
     const pathArrowLeft = mdiArrowLeft;
 
     function calculateDiet(data){
-        console.log(data);
+
         if (data.gender === 'male')
         {
-            console.log((10 * data.weight + 6.25 * data.height - 5 * data.age + 5) * activity[data.activity])
             calorieAllowance.value = (10 * data.weight + 6.25 * data.height - 5 * data.age + 5) * activity[data.activity];
         }
         if (data.gender === 'female')
@@ -60,6 +71,7 @@ import { ref } from 'vue';
     const secondDate = ref(new Date());
     
     const getDaysArray = function(start, end) {
+
         const arr = [];
         for(const dt=new Date(start); dt<=new Date(end); dt.setDate(dt.getDate()+1)){
             arr.push(new Date(dt).getDate() + "/" + (new Date(dt).getMonth() + 1) + "/" + new Date(dt).getFullYear());
@@ -68,19 +80,23 @@ import { ref } from 'vue';
     };
     
     const dayArray = computed(() => { 
+
         return getDaysArray(firstDate.value, secondDate.value);
-    })
+      })
 
     function editFirstDate(date) {
+
         firstDate.value = date;
-      }
+    }
 
     function editSecondDate(date) {
+
         secondDate.value = date;
-      }
+    }
 
     //функция преобразует cтроку формата DD/MM/YYYY в Date
     function convertToDate(dateString) {
+
         const dateParts = dateString.split("/");
         const dateObject = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]); 
         return dateObject;
@@ -88,6 +104,7 @@ import { ref } from 'vue';
 
     //вычисляет разницу в днях между датами
     function daysDifference(d0, d1) {
+
         var diff = new Date(+d1).setHours(12) - new Date(+d0).setHours(12);
         return Math.round(diff/8.64e7);
     }
@@ -103,6 +120,7 @@ import { ref } from 'vue';
         });
 
     const caloriesByDay = computed(() => { 
+
         const array = new Array(options.xaxis.categories.length).fill(0);
         let sum = 0;
         for (const [day, meal] of Object.entries(rootStore.dailyDiet)) {
@@ -119,13 +137,12 @@ import { ref } from 'vue';
                 }
             }
         }
-        console.log(array)
         return array;
     })
 
     const allowance = computed(() => { 
+
         const array = new Array(options.xaxis.categories.length).fill(Math.floor(calorieAllowance.value));
-        console.log(array)
         return array;
     })
 
